@@ -1,77 +1,85 @@
-import express from "express"; // Importing express for the web framework
-import bodyParser from "body-parser"; // Importing bodyParser for parsing request bodies
-import ejsLayouts from "express-ejs-layouts"; // Importing express-ejs-layouts for layout support
-import path from "path"; // Importing express-ejs-layouts for layout support
-import dotenv from "dotenv"; // Importing dotenv to load environment variables
-import session from "express-session"; // Importing express-session for session management
-import passport from "passport"; // Importing passport for authentication
-import { Strategy as GoogleStrategy } from "passport-google-oauth20"; // Importing Google OAuth 2.0 strategy for passport
+import express from "express";
+import bodyParser from "body-parser";
+import ejsLayouts from "express-ejs-layouts";
+import path from "path";
+import dotenv from "dotenv";
+import session from "express-session";
+import passport from "passport";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 
-import { connectUsingMongoose } from "./config/mongodb.js"; // Importing MongoDB connection function
-import router from "./routes/routes.js"; // Importing main application routes
-import authrouter from "./routes/authRoutes.js"; // Importing authentication routes
+import { connectUsingMongoose } from "./config/mongodb.js";
+import router from "./routes/routes.js";
+import authrouter from "./routes/authRoutes.js";
 
-dotenv.config(); // Loading environment variables from .env file
-const app = express(); // Initializing express application
+// Load biến môi trường từ file .env
+dotenv.config();
 
-//SESSION
+// ==================== DEBUG ENV ====================
+console.log("📌 Checking environment variables:");
+console.log("DB_CONNECTION_STRING:", process.env.DB_CONNECTION_STRING ? "Loaded" : "Missing");
+console.log("CLIENT_ID:", process.env.CLIENT_ID ? "Loaded" : "Missing");
+console.log("CLIENT_SECRET:", process.env.CLIENT_SECRET ? "Loaded" : "Missing");
+console.log("CALLBACK_URL:", process.env.CALLBACK_URL || "Missing");
+
+// ==================== EXPRESS APP ====================
+const app = express();
+
+// ==================== SESSION ====================
 app.use(
-  session({
-    secret: "SecretKey",
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false },
-  })
+    session({
+        secret: process.env.SESSION_SECRET || "defaultSecret",
+        resave: false,
+        saveUninitialized: true,
+        cookie: { secure: false }, // nếu deploy https thì đổi thành true
+    })
 );
 
-//MIDDLEWARE
+// ==================== MIDDLEWARE ====================
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+app.use(express.static("public"));
 
-//Passport
+// ==================== PASSPORT CONFIG ====================
 app.use(passport.initialize());
 app.use(passport.session());
 
 passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.CLIENT_ID,
-      clientSecret: process.env.CLIENT_SECRET,
-      callbackURL:
-        "https://nodejs-authentication-system-l2pu.onrender.com/auth/google/callback",
-      scope: ["profile", "email"],
-    },
-    function (accessToken, refreshToken, profile, callback) {
-      callback(null, profile);
-    }
-  )
+    new GoogleStrategy({
+            clientID: process.env.CLIENT_ID,
+            clientSecret: process.env.CLIENT_SECRET,
+            callbackURL: process.env.CALLBACK_URL,
+        },
+        function(accessToken, refreshToken, profile, done) {
+            return done(null, profile);
+        }
+    )
 );
 
 passport.serializeUser((user, done) => {
-  done(null, user);
+    done(null, user);
 });
 
 passport.deserializeUser((user, done) => {
-  done(null, user);
+    done(null, user);
 });
 
-// Set Templates
-app.set("view engine", "ejs"); // Define template engine
-app.use(ejsLayouts); // Use base template
-app.set("views", path.join(path.resolve(), "views")); // Define template directory
+// ==================== VIEWS ====================
+app.set("view engine", "ejs");
+app.use(ejsLayouts);
+app.set("views", path.join(path.resolve(), "views"));
 
-// DB Connection
+// ==================== DATABASE ====================
 connectUsingMongoose();
 
-//ROUTES
+// ==================== ROUTES ====================
 app.get("/", (req, res) => {
-  res.send("Hey Ninja ! Go to /user/signin for the login page.");
+    res.send("Hey Ninja! Go to /user/signin for the login page.");
 });
 app.use("/user", router);
 app.use("/auth", authrouter);
-app.use(express.static("public"));
 
-//LISTEN
-app.listen(process.env.PORT, () => {
-  console.log(`Server is running on port ${process.env.PORT}`);
+// ==================== SERVER LISTEN ====================
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`🚀 Server is running on port ${PORT}`);
 });

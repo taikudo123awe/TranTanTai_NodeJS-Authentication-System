@@ -1,88 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Node Authentication</title>
+
     <!-- Bootstrap CSS -->
-    <link
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
     <style>
-      /* Background image style */
-      body {
-        background-image: url("/cn.png");
-        background-size: contain;
-        background-position: center;
-        background-repeat: no-repeat;
-        background-color: black;
-        background-attachment: fixed;
-      }
-
-      .navbar-brand {
-        color: #fff !important;
-      }
-
-      .main-content {
-        background: rgba(
-          0,
-          0,
-          0,
-          0.5
-        ); /* Add a semi-transparent background to main content for readability */
-        padding: 20px;
-        border-radius: 5px;
-        margin-left: 50px;
-      }
-      h1,
-      h2,
-      p {
-        color: white;
-      }
-      input {
-        border: 3px solid rgb(60, 63, 63);
-        border-radius: 5px;
-      }
-      section {
-        padding-left: 20px;
-        backdrop-filter: blur(3px);
-        background-color: rgba(
-          255,
-          255,
-          255,
-          0.25
-        ); /* Adjust the transparency as needed */
-        border: 1px solid rgba(255, 255, 255, 0.01);
-        border-radius: 16px;
-        display: inline-block;
-        height: auto;
-        width: auto;
-        margin-top: 20px;
-      }
+        /* ===== Background ===== */
+        
+        body {
+            background-image: url("/cn.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: black;
+            background-attachment: fixed;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        /* ===== Navbar ===== */
+        
+        .navbar-brand {
+            color: #fff !important;
+        }
+        /* ===== Container chính ===== */
+        
+        main {
+            display: flex;
+            justify-content: flex-start;
+            /* Form nằm bên trái */
+            align-items: flex-start;
+            min-height: calc(100vh - 70px);
+            /* trừ chiều cao navbar */
+            padding: 50px;
+        }
+        /* ===== Form box ===== */
+        
+        section {
+            max-width: 350px;
+            width: 100%;
+            padding: 30px;
+            backdrop-filter: blur(5px);
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            color: #fff;
+        }
+        
+        section h1,
+        section h2,
+        section p {
+            color: #fff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        /* ===== Input ===== */
+        
+        section input[type="text"],
+        section input[type="email"],
+        section input[type="password"] {
+            width: 100%;
+            padding: 10px 12px;
+            margin-bottom: 15px;
+            /* mỗi input cách nhau 15px */
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        /* ===== Button ===== */
+        
+        section button {
+            width: 100%;
+            padding: 10px;
+            background-color: #ff4b2b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        section button:hover {
+            background-color: #ff1a1a;
+        }
+        /* ===== Link dưới form ===== */
+        
+        section a {
+            color: #ffd700;
+            text-decoration: none;
+        }
+        
+        section a:hover {
+            text-decoration: underline;
+        }
+        
+        .error {
+            color: #ff8080;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 15px;
+        }
     </style>
-  </head>
-  <body>
+</head>
+
+<body>
     <header>
-      <nav
-        class="navbar navbar-expand-lg navbar-dark"
-        style="background-color: rgb(66, 66, 66); border: 4px solid #100f0f3e"
-      >
-        <div class="container">
-          <a class="navbar-brand mx-auto" href="#">
-            <strong>NodeJS Authentication System</strong>
-          </a>
-        </div>
-      </nav>
+        <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: rgb(66, 66, 66); border-bottom: 3px solid #333">
+            <div class="container">
+                <a class="navbar-brand mx-auto" href="#">
+                    <strong>NodeJS Authentication System</strong>
+                </a>
+            </div>
+        </nav>
     </header>
+
     <main>
-      <!-- This is where content from other pages will be injected -->
-      <%- body %>
+        <!-- Nội dung của các trang con sẽ được inject vào đây -->
+        <%- body %>
     </main>
-    <!-- Bootstrap JS and dependencies -->
+
+    <!-- Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  </body>
+</body>
+
 </html>

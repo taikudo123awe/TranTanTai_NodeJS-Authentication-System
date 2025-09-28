@@ -1,21 +1,52 @@
-<section>
+<section class="homepage-container">
     <h1><strong>Welcome to the Home Page</strong></h1>
-    <div>
+
+    <div class="buttons">
         <button class="btn btn-light" onclick="signOut()">Sign Out</button>
         <button class="btn btn-light" onclick="resetPassword()">Change Password</button>
-    </div>  
+    </div>
+
+    <div class="user-info">
+        <p><strong>StudentID:</strong>
+            <%= studentId %>
+        </p>
+        <p><strong>Fullname:</strong>
+            <%= fullname %>
+        </p>
+        <p><strong>Email:</strong>
+            <%= user ? user.email : 'Not available' %>
+        </p>
+    </div>
 </section>
 
-    <script>
-        // Function to handle sign-out
-        function signOut() {
-            // Perform sign-out logic (e.g., redirect to sign-out route)
-            window.location.href = "/user/signout";
-        }
+<script>
+    // Function to handle sign-out
+    function signOut() {
+        window.location.href = "/user/signout";
+    }
 
-        // Function to handle reset password
-        function resetPassword() {
-            // Perform reset password logic (e.g., redirect to reset password route)
-            window.location.href = "/user/change-password";
-        }
-    </script>
+    // Function to handle reset password
+    function resetPassword() {
+        window.location.href = "/user/change-password";
+    }
+</script>
+
+<style>
+    .homepage-container {
+        text-align: center;
+        margin-top: 50px;
+    }
+    
+    .buttons {
+        margin-bottom: 30px;
+    }
+    
+    .buttons .btn {
+        margin: 0 10px;
+    }
+    
+    .user-info p {
+        font-size: 18px;
+        margin: 5px 0;
+    }
+</style>

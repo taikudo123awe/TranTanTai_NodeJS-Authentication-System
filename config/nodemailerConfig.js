@@ -1,13 +1,31 @@
-import nodemailer from 'nodemailer';  // Importing nodemailer for email sending functionality
-import dotenv from 'dotenv';          // Importing dotenv to load environment variables
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
 
-dotenv.config();  // Loading environment variables from .env file
+dotenv.config();
 
-// Creating a transporter using nodemailer
+// Tạo transporter
 export const transporter = nodemailer.createTransport({
-    service: 'gmail',  // Using Gmail as the email service provider
+    service: 'gmail',
     auth: {
-        user: process.env.EMAIL,     // Fetching email address from environment variables
-        pass: process.env.PASSWORD   // Fetching email password from environment variables
+        user: process.env.EMAIL, // Email Gmail
+        pass: process.env.PASSWORD // Mật khẩu ứng dụng (App Password)
     }
 });
+
+// Hàm gửi email test
+export const sendTestEmail = async() => {
+    try {
+        const info = await transporter.sendMail({
+            from: process.env.EMAIL,
+            to: process.env.EMAIL, // Gửi về chính email của bạn để kiểm tra
+            subject: 'Test Nodemailer',
+            text: 'Hello! Đây là email test từ NodeJS Auth System.'
+        });
+        console.log('✅ Email test gửi thành công:', info.response);
+    } catch (error) {
+        console.error('❌ Lỗi khi gửi email test:', error);
+    }
+};
+
+// Gọi hàm test ngay khi chạy file này (có thể comment khi deploy)
+sendTestEmail();

@@ -1,26 +1,35 @@
-import passport from 'passport';  // Importing passport for authentication
-import express from 'express';    // Importing express for the web framework
-import { googleSignInController } from '../controllers/authController.js';  // Importing the Google sign-in controller
-import dotenv from 'dotenv';      // Importing dotenv to load environment variables
+import passport from 'passport';
+import express from 'express';
+import dotenv from 'dotenv';
 
-dotenv.config();  // Loading environment variables from .env file
+dotenv.config();
 
-const authRouter = express.Router(); // Creating an instance of express Router for handling authentication routes
-const googleSignIn = new googleSignInController(); // Creating an instance of GoogleSignInController
+const authRouter = express.Router();
 
-// OAuth2 login with Google
-authRouter.get("/google", passport.authenticate('google', { scope: ['email', 'profile'] }));
-
-// Google OAuth2 callback
-authRouter.get("/google/callback",
-    passport.authenticate("google", {
-        successRedirect: process.env.CLIENT_URL,
-        failureRedirect: "/login/failed"
-    })
+// Bắt đầu Google OAuth
+authRouter.get("/google",
+    passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
-// Routes for handling login success and failure
-authRouter.get("/login/success", googleSignIn.signInSuccess);
-authRouter.get("/login/failed", googleSignIn.signInFailed);
+// Callback Google OAuth
+authRouter.get("/google/callback",
+    passport.authenticate("google", { failureRedirect: "/user/signin" }),
+    (req, res) => {
+        // Lưu email vào session để dùng sau
+        if (req.user && req.user.emails) {
+            req.session.userEmail = req.user.emails[0].value;
+        }
+        // Redirect về homepage sau khi login thành công
+        res.redirect("/user/homepage");
+    }
+);
 
-export default authRouter; // Exporting the Auth Router
+// Logout Google
+authRouter.get("/logout", (req, res) => {
+    req.logout(() => {
+        req.session.destroy();
+        res.redirect("/user/signin");
+    });
+});
+
+export default authRouter;

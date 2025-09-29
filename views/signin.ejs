@@ -1,9 +1,5 @@
 <section class="signup-container">
     <h1>Sign In</h1>
-    <p>StudentID:
-        <%= studentId %> - Fullname:
-            <%= fullname %>
-    </p>
 
     <% if (message) { %>
         <p class="error">
@@ -26,4 +22,9 @@
             <a href="/user/forgot-password"><strong>Forgot Password?</strong></a><br>
 
             <p><strong>Don't have an account?</strong> &nbsp; <a href="/user/signup"><strong>Sign up</strong></a></p>
+            <p>StudentID:
+                <%= studentId %> - Fullname:
+                    <%= fullname %>
+            </p>
+        
 </section>

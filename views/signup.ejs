@@ -1,10 +1,5 @@
 <section class="signup-container">
     <h1>Sign Up</h1>
-    <p>StudentID:
-        <%= studentId %> - Fullname:
-            <%= fullname %>
-    </p>
-
     <% if (message) { %>
         <p class="error">
             <%= message %>
@@ -22,11 +17,15 @@
                 <div class="g-recaptcha" data-sitekey="<%= process.env.RECAPTCHA_SITE_KEY %>"></div>
 
 
-                <button type="submit" class="btn">Sign Up</button>
+                <button type="submit" class="btn btn-success">Sign Up</button>
             </form>
 
             <a href="/auth/google" class="google-btn">Sign In with Google</a>
             <p class="signin-text">
                 Already have an account? <a href="/user/signin">Sign in</a>
+            </p>
+            <p>StudentID:
+                <%= studentId %> - Fullname:
+                    <%= fullname %>
             </p>
 </section>

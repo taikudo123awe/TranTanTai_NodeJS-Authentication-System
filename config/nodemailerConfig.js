@@ -19,11 +19,11 @@ export const sendTestEmail = async() => {
             from: process.env.EMAIL,
             to: process.env.EMAIL, // Gửi về chính email của bạn để kiểm tra
             subject: 'Test Nodemailer',
-            text: 'Hello! Đây là email test từ NodeJS Auth System.'
+            text: 'Hello!'
         });
-        console.log('✅ Email test gửi thành công:', info.response);
+        console.log('Email test gửi thành công:', info.response);
     } catch (error) {
-        console.error('❌ Lỗi khi gửi email test:', error);
+        console.error('Lỗi khi gửi email test:', error);
     }
 };
 

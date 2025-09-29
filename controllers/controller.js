@@ -30,7 +30,7 @@ export class UserGetController {
         const email = req.session.userEmail;
         if (!email) {
             return res.status(404).render("signin", {
-                message: "Please sign in to view the homepage",
+                message: "Please sign",
                 studentId: process.env.STUDENT_ID,
                 fullname: process.env.STUDENT_NAME
             });
@@ -155,7 +155,7 @@ export class UserPostController {
                 return res.status(400).render("signin", {
                     studentId: process.env.STUDENT_ID,
                     fullname: process.env.STUDENT_NAME,
-                    message: "Incorrect password"
+                    message: "Incorrect password or username"
                 });
             }
 

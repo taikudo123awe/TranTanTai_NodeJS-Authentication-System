@@ -15,11 +15,11 @@ import authrouter from "./routes/authRoutes.js";
 dotenv.config();
 
 // ==================== DEBUG ENV ====================
-console.log("📌 Checking environment variables:");
-console.log("DB_CONNECTION_STRING:", process.env.DB_CONNECTION_STRING ? "Loaded" : "Missing");
-console.log("CLIENT_ID:", process.env.CLIENT_ID ? "Loaded" : "Missing");
-console.log("CLIENT_SECRET:", process.env.CLIENT_SECRET ? "Loaded" : "Missing");
-console.log("CALLBACK_URL:", process.env.CALLBACK_URL || "Missing");
+// console.log("📌 Checking environment variables:");
+// console.log("DB_CONNECTION_STRING:", process.env.DB_CONNECTION_STRING ? "Loaded" : "Missing");
+// console.log("CLIENT_ID:", process.env.CLIENT_ID ? "Loaded" : "Missing");
+// console.log("CLIENT_SECRET:", process.env.CLIENT_SECRET ? "Loaded" : "Missing");
+// console.log("CALLBACK_URL:", process.env.CALLBACK_URL || "Missing");
 
 // ==================== EXPRESS APP ====================
 const app = express();
@@ -73,7 +73,7 @@ connectUsingMongoose();
 
 // ==================== ROUTES ====================
 app.get("/", (req, res) => {
-    res.send("Hey Ninja! Go to /user/signin for the login page.");
+    res.redirect("/user/signin");
 });
 app.use("/user", router);
 app.use("/auth", authrouter);
@@ -81,5 +81,5 @@ app.use("/auth", authrouter);
 // ==================== SERVER LISTEN ====================
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`🚀 Server is running on port ${PORT}`);
+    console.log(`🚀 Server is running on http://localhost:${PORT}`);
 });
